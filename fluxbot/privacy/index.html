@@ -23,19 +23,19 @@
 <body>
 <main>
   <h1>Privacy Policy</h1>
-  <p class="sub">Fluxbot, a game by isiksarper (app id com.isiksarper.fluxbot). Last updated: 20 October 2026. <a href="#tr">Türkçe özet aşağıda</a>.</p>
+  <p class="sub">Fluxbot, a game by isiksarper (app id com.isiksarper.fluxbot). Last updated: 6 November 2026 (version 1.1.0). <a href="#tr">Türkçe özet aşağıda</a>.</p>
 
   <h2>In short</h2>
   <ul>
     <li>No account, no sign-up. The game does <strong>not</strong> ask for your name, e-mail, phone number, location, contacts, photos or any other personal information.</li>
-    <li>The game has <strong>no server of its own</strong> and no analytics. Nothing about you is sent to the developer.</li>
+    <li>The game has <strong>no server of its own</strong>. It uses <strong>Google Firebase Analytics</strong> for anonymous usage statistics (see "Analytics"); no name, e-mail or other personal details are sent to the developer.</li>
     <li>The game shows <strong>ads</strong> (Google AdMob) and offers <strong>optional in-app purchases</strong> (Google Play Billing). These Google services process some technical data, described below.</li>
     <li>Your progress and settings are stored only on your device.</li>
     <li>The game is not directed at children under 13.</li>
   </ul>
 
   <h2>Data stored on your device</h2>
-  <p>Your progress (best distance, Bolts and Chips, unlocked skins, daily chest timer), settings (music, sound, vibration, language) and the list of products you own are kept in the app's local storage (localStorage) on your device. They never leave your device through the game. Uninstalling the app or clearing its data deletes them. Purchases stay in your Google Play account and come back with "Restore purchases".</p>
+  <p>Your progress (best distance, Bolts and Chips, unlocked skins, daily chest timer), settings (music, sound, vibration, language) and the list of products you own are kept in the app's local storage (localStorage) on your device. They never leave your device through the game. Uninstalling the app or clearing its data deletes them. Purchases stay in your Google Play account and come back with "Restore purchases". (Analytics events are described below.)</p>
 
   <h2>Ads (Google AdMob)</h2>
   <p>Ads are provided by <strong>Google AdMob</strong>. To show an ad, limit how often it appears, prevent fraud and measure ad performance, AdMob may process your device's <strong>advertising ID</strong>, IP address, device and app information (such as device model, OS version, app version, language) and your interactions with ads. This processing is governed by Google's policies:
@@ -48,17 +48,29 @@
     <li>You can reset or delete your advertising ID in your Android settings (Privacy &rarr; Ads) and opt out of ad personalisation there.</li>
   </ul>
 
+  <h2>Analytics (Google Firebase Analytics)</h2>
+  <p>To improve the game we use <strong>Google Firebase Analytics</strong> to collect anonymous usage statistics. The game has no accounts; this data is not linked to your name or e-mail and goes to Google's Firebase service, not to a server of ours (sent over HTTPS). According to Google's documentation, it may include:</p>
+  <ul>
+    <li>an app-instance ID, device and app information (model, OS version, language, app version);</li>
+    <li>approximate location derived from your IP address (country/city level; no GPS);</li>
+    <li>session and usage statistics (app opens, screen views, engagement time);</li>
+    <li>events sent by the game: the first time you reach a biome, an interstitial or rewarded ad being shown, a rewarded ad being completed, on purchase completion: product ID, amount and currency; plus the app version.</li>
+    <li>On Android the advertising ID may also be collected by Analytics when available on the device (default behaviour per Google's documentation).</li>
+  </ul>
+  <p><strong>Purpose:</strong> to understand which levels are played, whether ad and purchase flows work, and to improve the game. <strong>Consent:</strong> In the Android version, in the EEA, UK and Switzerland (regions where Google's consent screen is shown) Analytics runs only if you allow the device-storage and content-measurement purposes on that screen; if you decline, or no consent answer is received, Analytics stays off and no analytics data is sent. You can change your choice later under "Privacy options" in the game. Where the screen is not shown, Analytics is on. Analytics' advertising-related signals (ad storage, ad user data, ad personalisation) are kept off where the consent screen is shown and are on elsewhere. In the iOS version, measurement analytics is not yet tied to this choice.</p>
+  <p><strong>Opt-out and deletion:</strong> where the consent screen is shown you can withdraw consent under "Privacy options"; everywhere you can stop new data by uninstalling the app, and delete or reset the Android advertising ID in system settings (Privacy → Ads). Because the data is not tied to an account, finding and deleting an individual record is often not possible; it expires under Google's Analytics data-retention setting. Questions: <a href="mailto:gamesoi0608@gmail.com">gamesoi0608@gmail.com</a>. More: <a href="https://firebase.google.com/support/privacy" rel="noopener">Firebase privacy information</a> · <a href="https://support.google.com/analytics/answer/11593727" rel="noopener">Google Analytics data collection</a> · <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>.</p>
+
   <h2>Purchases (Google Play Billing)</h2>
-  <p>The game offers four optional one-time purchases: Remove Ads, 100 Chips, 600 Chips and Starter Pack. Payments are handled entirely by Google Play; your payment details (card, address) never reach the game. The game only learns from Google Play on your device which products you own and whether a payment completed, acknowledges the purchase to Google Play, and keeps that information on your device. Data processed by Google Play is covered by the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>. "Remove Ads" turns off pop-up (interstitial) ads; optional rewarded ads remain available.</p>
+  <p>The game offers four optional one-time purchases: Remove Ads, 100 Chips, 600 Chips and Starter Pack. Payments are handled entirely by Google Play; your payment details (card, address) never reach the game. The game only learns from Google Play on your device which products you own and whether a payment completed, acknowledges the purchase to Google Play, and keeps that information on your device. When a new purchase completes, the product ID, amount and currency are sent to Firebase Analytics as an event for statistics (no payment details). Data processed by Google Play is covered by the <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>. "Remove Ads" turns off pop-up (interstitial) ads; optional rewarded ads remain available.</p>
 
   <h2>Cookies and tracking</h2>
-  <p>The game itself uses no cookies, tracking pixels, fingerprinting or analytics. The ad network's use of identifiers is described above.</p>
+  <p>The game itself uses no cookies, tracking pixels or fingerprinting. Firebase Analytics and the ad network's use of identifiers are described above.</p>
 
   <h2>Children</h2>
   <p>Fluxbot is intended for ages 13 and over and is not directed at children under 13. We do not knowingly collect data from children under 13.</p>
 
   <h2>Your rights and deletion</h2>
-  <p>Because the game keeps no data about you on its own servers, there is no account to delete: uninstall the app or clear its data to remove everything stored on your device. For data processed by Google (ads, Play Billing), use the privacy tools in your Google account and the in-game Privacy options. Depending on where you live (for example under the GDPR or CCPA) you may have rights to access, correct, delete or object to processing; for data held by Google, please contact Google, and for anything else contact us below.</p>
+  <p>Because the game keeps no data about you on its own servers, there is no account to delete: uninstall the app or clear its data to remove everything stored on your device. Analytics data is not tied to an account, so deleting individual records is often not possible (see "Analytics"). For data processed by Google (ads, analytics, Play Billing), use the privacy tools in your Google account and the in-game Privacy options. Depending on where you live (for example under the GDPR or CCPA) you may have rights to access, correct, delete or object to processing; for data held by Google, please contact Google, and for anything else contact us below.</p>
 
   <h2>Changes</h2>
   <p>If a new third-party service is added to the game, this page will be updated and the data involved will be listed here.</p>
@@ -68,15 +80,16 @@
 
   <section class="tr" id="tr" lang="tr">
     <h2>Gizlilik Politikası (Türkçe)</h2>
-    <p><strong>Fluxbot</strong> (isiksarper), son güncelleme: 20 Ekim 2026.</p>
+    <p><strong>Fluxbot</strong> (isiksarper), son güncelleme: 6 Kasım 2026 (sürüm 1.1.0).</p>
     <ul>
-      <li><strong>Hesap yok, kişisel veri yok:</strong> oyun adınızı, e-postanızı, telefonunuzu, konumunuzu, kişilerinizi ya da fotoğraflarınızı istemez. Oyunun kendi sunucusu ve analitiği yoktur; geliştiriciye hiçbir veri gönderilmez.</li>
+      <li><strong>Hesap yok, kişisel veri yok:</strong> oyun adınızı, e-postanızı, telefonunuzu, konumunuzu, kişilerinizi ya da fotoğraflarınızı istemez. Oyunun kendi sunucusu yoktur; ad, e-posta gibi kişisel bilgi geliştiriciye gönderilmez.</li>
+      <li><strong>Analitik (Google Firebase Analytics):</strong> anonim kullanım istatistikleri toplanır: uygulama kurulum kimliği, cihaz/uygulama bilgisi (model, işletim sistemi, dil, sürüm), IP'den türetilen yaklaşık konum (GPS yok), oturum istatistikleri ve oyun olayları (bir biyoma ilk kez ulaşma, reklamın gösterilmesi, ödüllü reklamın tamamlanması, satın alma tamamlandığında ürün kimliği, tutar ve para birimi). Android'de reklam kimliği de toplanabilir. Veriler hesapla ilişkilendirilmez ve Google'ın Firebase hizmetine gider. Amaç: oyunu geliştirmek. Android sürümünde AB/Birleşik Krallık/İsviçre'de (Google izin ekranı gösterilen bölgelerde) Analytics yalnızca bu ekranda cihazda saklama ve içerik ölçümü amaçlarına izin verirseniz çalışır; izin vermezseniz ya da izin yanıtı alınamazsa analiz verisi gönderilmez ve seçiminizi "Gizlilik seçenekleri"nden değiştirebilirsiniz. Bu bölgelerde Analytics'in reklam sinyalleri kapalı tutulur. Diğer bölgelerde Analytics açıktır. iOS sürümünde ölçüm analitiği henüz bu seçime bağlı değildir. Hesaba bağlı olmadığından tek tek kayıt silmek çoğu zaman mümkün değildir; yeni veri üretimini uygulamayı kaldırarak durdurabilirsiniz. Ayrıntı: <a href="https://firebase.google.com/support/privacy" rel="noopener">Firebase gizlilik bilgisi</a>.</li>
       <li><strong>Yerel kayıt:</strong> ilerleme (rekor, Cıvata, Çip, kostümler), ayarlar ve sahip olduğunuz ürünler yalnızca cihazınızda (localStorage) saklanır. Uygulamayı kaldırmak ya da verilerini temizlemek hepsini siler.</li>
       <li><strong>Reklamlar (Google AdMob):</strong> AdMob, reklam göstermek, sıklığı sınırlamak, sahtekârlığı önlemek ve ölçüm için cihazın <strong>reklam kimliğini</strong>, IP adresini, cihaz ve uygulama bilgilerini ve reklam etkileşimlerini işleyebilir; bu işleme <a href="https://policies.google.com/privacy" rel="noopener">Google Gizlilik Politikası</a>na tabidir. Geçiş reklamları ölüm ekranında çıkabilir; ödüllü reklamlar her zaman isteğe bağlıdır.</li>
       <li><strong>İzin (AB/GDPR ve diğer bölgeler):</strong> ilk açılışta Google'ın izin formu (UMP) gösterilir; seçiminizi istediğiniz an <em>Ayarlar &rarr; Gizlilik seçenekleri</em> düğmesinden değiştirebilirsiniz. ABD eyalet gizlilik yasalarının gerektirdiği yerlerde aynı form üzerinden tercihlerinizi (kişiselleştirilmiş reklam için veri satışı/paylaşımından çıkma dahil) yönetebilirsiniz. Reklam kimliğini Android ayarlarından (Gizlilik &rarr; Reklamlar) sıfırlayabilir ya da silebilirsiniz.</li>
-      <li><strong>Satın almalar (Google Play Faturalandırma):</strong> Reklamları Kaldır, 100 Çip, 600 Çip ve Başlangıç Paketi isteğe bağlıdır. Ödeme tamamen Google Play'de yapılır; kart/adres bilgileriniz oyuna ulaşmaz. "Reklamları Kaldır" geçiş reklamlarını kapatır, isteğe bağlı ödüllü reklamlar kalır.</li>
+      <li><strong>Satın almalar (Google Play Faturalandırma):</strong> (Satın alma tamamlandığında ürün kimliği, tutar ve para birimi analiz olayı olarak Firebase'e gider.) Reklamları Kaldır, 100 Çip, 600 Çip ve Başlangıç Paketi isteğe bağlıdır. Ödeme tamamen Google Play'de yapılır; kart/adres bilgileriniz oyuna ulaşmaz. "Reklamları Kaldır" geçiş reklamlarını kapatır, isteğe bağlı ödüllü reklamlar kalır.</li>
       <li><strong>Çocuklar:</strong> oyun 13 yaş ve üzeri içindir, 13 yaş altı çocuklara yönelik değildir; bilerek çocuklardan veri toplanmaz.</li>
-      <li><strong>Haklarınız:</strong> oyunun sunucusunda verinizi tutmadığı için silinecek hesap yoktur; Google'ın işlediği veriler için Google hesabınızın gizlilik araçlarını kullanın. Diğer sorular için: <a href="mailto:gamesoi0608@gmail.com">gamesoi0608@gmail.com</a>.</li>
+      <li><strong>Haklarınız:</strong> oyunun sunucusunda hesabınıza bağlı veri tutulmadığı için silinecek hesap yoktur; analitik verisi hesaba bağlı olmadığından tek tek silinmesi çoğu zaman mümkün değildir; Google'ın işlediği veriler için Google hesabınızın gizlilik araçlarını kullanın. Diğer sorular için: <a href="mailto:gamesoi0608@gmail.com">gamesoi0608@gmail.com</a>.</li>
     </ul>
   </section>
 
