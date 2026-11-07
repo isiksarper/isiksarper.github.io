@@ -23,21 +23,20 @@
 <body>
 <main>
   <h1>Gizlilik Politikası</h1>
-  <p class="sub">Sinyal Kulesi: Ağ Kurucu (Signal Tower: Network Builder) — bir isiksarper oyunu. Yürürlük tarihi ve son güncelleme: 22 Ekim 2026 (sürüm 1.1).</p>
+  <p class="sub">Sinyal Kulesi: Ağ Kurucu (Signal Tower: Network Builder) — bir isiksarper oyunu. Son güncelleme: 6 Kasım 2026 (sürüm 1.1.1).</p>
 
   <h2>Kısaca</h2>
   <ul>
     <li>Oyun <strong>reklam gösterir</strong> (Google AdMob): ilk bölge (bölüm 1–12) ve final reklamsızdır; sonrasında yalnızca bölüm aralarında
       ("Sonraki ▶"a basınca) en az 4 dakika ve 3 bölümde bir geçiş reklamı ve her zaman <strong>isteğe bağlı</strong> ödüllü reklam ("🎬 Akü doldur").</li>
-    <li><strong>Analitik yoktur.</strong> Oyunun kendi sunucusu yoktur; oyun hiçbir yere kişisel veri göndermez. Dış hizmetler yalnızca Google'ın reklam
-      (AdMob), izin (User Messaging Platform) ve ödeme (Google Play Faturalandırma) hizmetleridir.</li>
+    <li>Oyunun kendi sunucusu yoktur; ad, e-posta gibi kişisel bilgi istenmez. Anonim kullanım istatistikleri için <strong>Google Firebase Analytics</strong> kullanılır (aşağıda). Dış hizmetler Google'ın reklam (AdMob), izin (User Messaging Platform), analitik (Firebase Analytics) ve ödeme (Google Play Faturalandırma) hizmetleridir.</li>
     <li>Oyunun tamamı reklam izlemeden ve satın almadan bitirilebilir. Hesap ya da kayıt gerekmez.</li>
     <li>İsteğe bağlı satın almalar: <strong>Reklamsız</strong> ve <strong>Destekçi</strong> (reklamsız + teşekkür rozeti). İkisi de bölüm arası reklamları kapatır.</li>
   </ul>
 
   <h2>Cihazda saklanan veriler</h2>
   <p>Oyun ilerlemeniz (yıldızlar, rekorlar), ayarlar (dil, ses, müzik, reklam kişiselleştirme tercihi), reklam sıklık sayaçları ve satın aldığınız
-  ürünlerin listesi yalnızca kendi cihazınızda (uygulamanın yerel depolamasında) saklanır ve cihazınızdan dışarı çıkmaz. Uygulamayı kaldırdığınızda
+  ürünlerin listesi yalnızca kendi cihazınızda (uygulamanın yerel depolamasında) saklanır; bu kayıtlar cihazınızdan çıkmaz (analiz olayları ayrıca aşağıda açıklanmıştır). Uygulamayı kaldırdığınızda
   ya da verilerini temizlediğinizde silinir; satın alımlarınız Google Play hesabınızda kalır ve "Satın alımları geri yükle" ile geri gelir.</p>
 
   <h2>Reklamlar (Google AdMob)</h2>
@@ -58,21 +57,33 @@
       gösterilmez.</li>
   </ul>
 
+  <h2>Analitik (Google Firebase Analytics)</h2>
+  <p>Oyunu geliştirmek için <strong>Google Firebase Analytics</strong> ile anonim kullanım istatistikleri toplanır. Oyunda hesap yoktur; bu veriler adınız ya da e-postanızla ilişkilendirilmez ve bizim sunucumuza değil, Google'ın Firebase hizmetine gider (HTTPS ile iletilir). Google'ın belgelerine göre toplanabilen veriler:</p>
+  <ul>
+    <li>uygulama kurulum kimliği (app instance ID), cihaz ve uygulama bilgisi (model, işletim sistemi sürümü, dil, uygulama sürümü);</li>
+    <li>IP adresinden türetilen yaklaşık konum (ülke/şehir düzeyi; GPS konumu istenmez);</li>
+    <li>oturum ve kullanım istatistikleri (uygulama açılışı, ekran görüntüleme, etkileşim süresi);</li>
+    <li>oyunun gönderdiği olaylar: bölüm ilerlemesi (bölüm numarası), geçiş veya ödüllü reklamın gösterildiği, ödüllü reklamın tamamlandığı, satın alma tamamlandığında ürün kimliği, tutar ve para birimi; ayrıca uygulama sürümü.</li>
+    <li>Android'de reklam kimliği (Advertising ID) cihazda mevcutsa Analytics tarafından da toplanabilir (Google'ın belgesine göre varsayılan davranış).</li>
+  </ul>
+  <p><strong>Amaç:</strong> hangi bölümlerin oynandığını, reklam ve satın alma akışlarının çalışıp çalışmadığını anlamak ve oyunu geliştirmek. <strong>İzin:</strong> Android sürümünde AB, Birleşik Krallık ve İsviçre'de (Google izin ekranının gösterildiği bölgelerde) Analytics yalnızca bu ekranda cihazda saklama ve içerik ölçümü amaçlarına izin verirseniz çalışır; izin vermezseniz ya da izin yanıtı alınamazsa Analytics kapalı kalır ve analiz verisi gönderilmez. Seçiminizi oyundaki "Gizlilik seçenekleri" ile sonradan değiştirebilirsiniz. Bu ekranın gösterilmediği bölgelerde Analytics açıktır. Analytics'in reklamla ilgili sinyalleri (reklam depolama, reklam kullanıcı verisi, reklam kişiselleştirme) izin ekranı gösterilen bölgelerde kapalı tutulur; diğer bölgelerde açıktır. iOS sürümünde ölçüm analitiği henüz bu seçime bağlı değildir.</p>
+  <p><strong>Vazgeçme ve silme:</strong> İzin ekranı gösterilen bölgelerde izninizi "Gizlilik seçenekleri"nden geri çekebilirsiniz; her yerde yeni veri üretimini uygulamayı kaldırarak durdurabilirsiniz; Android reklam kimliğini ayarlardan (Gizlilik → Reklamlar) silebilir ya da sıfırlayabilirsiniz. Veriler bir hesaba bağlı olmadığından tek tek kaydı bulup silmek çoğu zaman mümkün değildir; Google'ın Analytics veri saklama ayarına göre süre sonunda silinir. Sorularınız için <a href="mailto:gamesoi0608@gmail.com">gamesoi0608@gmail.com</a>. Ayrıntı: <a href="https://firebase.google.com/support/privacy" rel="noopener">Firebase gizlilik bilgisi</a> · <a href="https://support.google.com/analytics/answer/11593727" rel="noopener">Google Analytics veri toplama</a> · <a href="https://policies.google.com/privacy" rel="noopener">Google Gizlilik Politikası</a>.</p>
+
   <h2>Satın almalar (Google Play Faturalandırma)</h2>
   <p>Satın almalar Google Play'in ödeme altyapısıyla yapılır; ödeme bilgileriniz (kart, adres vb.) oyuna <strong>ulaşmaz</strong>. Oyun, hangi ürüne
   sahip olduğunuzu ve ödemenin tamamlanıp tamamlanmadığını yalnızca cihazdaki Google Play'den öğrenir, satın alımı Google Play'e onaylar (acknowledge)
-  ve bu bilgiyi yalnızca cihazınızda kullanır. Oyunun kendi sunucusu olmadığından satın alma bilgisi başka bir yere gönderilmez. Google Play'in
+  ve sahip olunan ürün listesini cihazınızda tutar. Oyunun kendi sunucusu yoktur; satın alma tamamlandığında yalnızca analiz için ürün kimliği, tutar ve para birimi Firebase Analytics'e olay olarak gönderilir (ödeme bilgisi gönderilmez). Google Play'in
   işlediği veriler <a href="https://policies.google.com/privacy" rel="noopener">Google Gizlilik Politikası</a>na tabidir.</p>
 
   <h2>Çerezler ve izleme</h2>
-  <p>Oyunun kendisi çerez, izleme pikseli, parmak izi ya da analitik kullanmaz. Reklam ağının kimlik kullanımı yukarıda açıklanmıştır.</p>
+  <p>Oyunun kendisi çerez, izleme pikseli ya da parmak izi kullanmaz. Analiz (Firebase Analytics) ve reklam ağının kimlik kullanımı yukarıda açıklanmıştır.</p>
 
   <h2>Çocuklar</h2>
   <p>Oyun 13 yaş ve üzeri için tasarlanmıştır ve çocuklara yönelik değildir; 13 yaş altından bilerek veri toplanmaz.</p>
 
   <h2>Haklarınız ve silme</h2>
   <p>Oyun sizinle ilgili hiçbir veriyi kendi sunucusunda tutmadığı için silinecek bir hesap yoktur: cihazdaki veriyi uygulamayı kaldırarak ya da
-  oyundaki "İlerlemeyi sıfırla" ile silebilirsiniz. Google'ın işlediği veriler için Google hesabınızdaki gizlilik araçlarını kullanabilirsiniz.</p>
+  oyundaki "İlerlemeyi sıfırla" ile silebilirsiniz. Google'ın işlediği veriler (reklam, analitik, ödeme) için Google hesabınızdaki gizlilik araçlarını kullanabilirsiniz; analitik verisinin silinmesi hakkında yukarıdaki "Analitik" bölümüne bakın.</p>
 
   <h2>Değişiklikler</h2>
   <p>Oyuna yeni bir üçüncü taraf hizmet eklenirse bu sayfa güncellenir ve işlenen veriler burada açıkça listelenir.</p>
@@ -82,7 +93,7 @@
 
   <section class="en">
     <h2>Privacy Policy (English)</h2>
-    <p><strong>Signal Tower: Network Builder</strong> (Sinyal Kulesi: Ağ Kurucu) by isiksarper, version 1.1, effective 22 October 2026.</p>
+    <p><strong>Signal Tower: Network Builder</strong> (Sinyal Kulesi: Ağ Kurucu) by isiksarper, version 1.1.1, last updated 6 November 2026.</p>
     <ul>
       <li><strong>Ads:</strong> the game shows ads from <strong>Google AdMob</strong>. Region 1 (levels 1–12) and the finale are ad-free; afterwards an
         interstitial may appear only between levels (when you tap "Next"), at most once every 4 minutes and 3 levels. Rewarded ads ("Refill battery") are
@@ -94,8 +105,19 @@
         <em>Ad-free · Supporter → Privacy options</em>. Elsewhere, <strong>personalised ads are off by default</strong>; you can turn them on or off in
         the same window.</li>
       <li><strong>Purchases:</strong> "Ad-free" and "Supporter" are one-time Google Play purchases. Payment details never reach the game; the game only
-        learns from Google Play on your device which products you own, acknowledges the purchase and keeps that list on your device.</li>
-      <li><strong>No analytics, no own server.</strong> Progress, settings, ad-frequency counters and owned products are stored only on your device.</li>
+        learns from Google Play on your device which products you own, acknowledges the purchase and keeps that list on your device. When a purchase completes, only the product ID, amount and currency are sent to Firebase Analytics as an event for statistics (no payment details).</li>
+      <li><strong>Analytics:</strong> see "Analytics" below. <strong>No own server:</strong> progress, settings, ad-frequency counters and owned products are stored only on your device.</li>
+      <li><h2>Analytics (Google Firebase Analytics)</h2>
+      <p>To improve the game we use <strong>Google Firebase Analytics</strong> to collect anonymous usage statistics. The game has no accounts; this data is not linked to your name or e-mail and goes to Google's Firebase service, not to a server of ours (sent over HTTPS). According to Google's documentation, it may include:</p>
+      <ul>
+        <li>an app-instance ID, device and app information (model, OS version, language, app version);</li>
+        <li>approximate location derived from your IP address (country/city level; no GPS);</li>
+        <li>session and usage statistics (app opens, screen views, engagement time);</li>
+        <li>events sent by the game: level progress (level number), an interstitial or rewarded ad being shown, a rewarded ad being completed, on purchase completion: product ID, amount and currency; plus the app version.</li>
+        <li>On Android the advertising ID may also be collected by Analytics when available on the device (default behaviour per Google's documentation).</li>
+      </ul>
+      <p><strong>Purpose:</strong> to understand which levels are played, whether ad and purchase flows work, and to improve the game. <strong>Consent:</strong> In the Android version, in the EEA, UK and Switzerland (regions where Google's consent screen is shown) Analytics runs only if you allow the device-storage and content-measurement purposes on that screen; if you decline, or no consent answer is received, Analytics stays off and no analytics data is sent. You can change your choice later under "Privacy options" in the game. Where the screen is not shown, Analytics is on. Analytics' advertising-related signals (ad storage, ad user data, ad personalisation) are kept off where the consent screen is shown and are on elsewhere. In the iOS version, measurement analytics is not yet tied to this choice.</p>
+      <p><strong>Opt-out and deletion:</strong> where the consent screen is shown you can withdraw consent under "Privacy options"; everywhere you can stop new data by uninstalling the app, and delete or reset the Android advertising ID in system settings (Privacy → Ads). Because the data is not tied to an account, finding and deleting an individual record is often not possible; it expires under Google's Analytics data-retention setting. Questions: <a href="mailto:gamesoi0608@gmail.com">gamesoi0608@gmail.com</a>. More: <a href="https://firebase.google.com/support/privacy" rel="noopener">Firebase privacy information</a> · <a href="https://support.google.com/analytics/answer/11593727" rel="noopener">Google Analytics data collection</a> · <a href="https://policies.google.com/privacy" rel="noopener">Google Privacy Policy</a>.</p></li>
       <li>The game is designed for ages 13+ and is not directed at children. Contact: <a href="mailto:gamesoi0608@gmail.com">gamesoi0608@gmail.com</a>.</li>
     </ul>
   </section>
