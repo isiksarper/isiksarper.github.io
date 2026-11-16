@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bilek Küpü</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600&display=swap">
+<style>
+/* Layout: ölçüm tezgâhı. Solda 3B görüş alanı, sağda okuma ve kontrol rayı; telefonda alt alta. */
+:root{
+  --bg:#E8ECF0; --surface:#F6F8FA; --fg:#14202C; --muted:#566475; --line:#C9D1DA;
+  --accent:#2D5BD8; --cursor:#D2701A; --scene:#DCE2E9; --grid:#8796A8; --edge:#33435A;
+  --ax-x:#C4433A; --ax-y:#2C8F4D; --ax-z:#2D5BD8;
+  --ok:#2C8F4D; --warn:#A8701A; --bad:#C4433A;
+  --f-display:"Space Grotesk",system-ui,sans-serif;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E141B; --surface:#151D26; --fg:#E2E8EF; --muted:#8A98A9; --line:#25303C;
+    --accent:#6F93FF; --cursor:#F09A45; --scene:#111921; --grid:#3E4C5D; --edge:#9AA9BA;
+    --ax-x:#F06A5F; --ax-y:#5BC47D; --ax-z:#6F93FF;
+    --ok:#5BC47D; --warn:#E0A84A; --bad:#F06A5F; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E141B; --surface:#151D26; --fg:#E2E8EF; --muted:#8A98A9; --line:#25303C;
+  --accent:#6F93FF; --cursor:#F09A45; --scene:#111921; --grid:#3E4C5D; --edge:#9AA9BA;
+  --ax-x:#F06A5F; --ax-y:#5BC47D; --ax-z:#6F93FF;
+  --ok:#5BC47D; --warn:#E0A84A; --bad:#F06A5F; color-scheme:dark;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:14px;line-height:1.45}
+*{box-sizing:border-box}
+.app{
+  display:grid;grid-template-columns:minmax(0,1fr) 348px;gap:16px;height:100%;min-height:600px;
+  padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+.stage{position:relative;min-width:0;border-radius:10px;overflow:hidden;background:var(--scene);border:1px solid var(--line)}
+#view{position:absolute;inset:0}
+#view canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+#view canvas:active{cursor:grabbing}
+.hud{position:absolute;left:14px;top:12px;display:flex;flex-direction:column;gap:6px;pointer-events:none}
+.hud .lbl{font:500 11px/1 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hud .cell{font:500 34px/1 var(--f-mono);font-variant-numeric:tabular-nums;color:var(--fg)}
+.hud .cell b{color:var(--accent);font-weight:500}
+.legend{position:absolute;left:14px;bottom:12px;display:flex;flex-wrap:wrap;gap:12px;font:400 12px/1.2 var(--f-mono);color:var(--muted);pointer-events:none}
+.legend i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:6px;vertical-align:middle}
+.hint{position:absolute;right:14px;top:14px;max-width:46%;font:400 11px/1.2 var(--f-mono);color:var(--muted);pointer-events:none;text-align:right}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 9px;border-radius:999px;font:500 12px/1 var(--f-mono);border:1px solid var(--line);background:var(--surface);color:var(--muted);width:max-content}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}
+.pill.ok{color:var(--ok)} .pill.warn{color:var(--warn)} .pill.bad{color:var(--bad)}
+
+.rail{min-width:0;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
+header h1{font:600 24px/1.1 var(--f-display);margin:0;letter-spacing:-.01em;text-wrap:balance}
+header p{margin:6px 0 0;color:var(--muted);font-size:13px}
+section{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+section p{margin:0}
+h2{font:500 11px/1 var(--f-mono);letter-spacing:.09em;text-transform:uppercase;color:var(--muted);margin:0}
+.seg{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:500 12.5px/1 var(--f-body);padding:9px 4px;border:0;background:transparent;color:var(--fg);cursor:pointer;border-left:1px solid var(--line)}
+.seg button:first-child{border-left:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.row > *{min-width:0}
+input[type=text],select{font:400 13px/1 var(--f-mono);padding:8px 9px;border-radius:7px;border:1px solid var(--line);background:var(--bg);color:var(--fg);flex:1}
+button.btn{font:500 13px/1 var(--f-body);padding:8px 12px;border-radius:7px;border:1px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+button.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.status{font-size:12.5px;color:var(--muted)}
+.status.ok{color:var(--ok)} .status.warn{color:var(--warn)} .status.bad{color:var(--bad)}
+dl{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;margin:0;font-size:13px}
+dt{color:var(--muted)}
+dd{margin:0;text-align:right;font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.ax-x{color:var(--ax-x)} .ax-y{color:var(--ax-y)} .ax-z{color:var(--ax-z)}
+label.sl{display:grid;grid-template-columns:64px 1fr 56px;gap:8px;align-items:center;font-size:13px}
+label.sl output{font-family:var(--f-mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--muted)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+label.chk{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer}
+input[type=checkbox]{accent-color:var(--accent);width:16px;height:16px}
+.field{display:grid;grid-template-columns:96px 1fr;gap:8px;align-items:center;font-size:13px}
+ol.log{list-style:none;margin:0;padding:0;font:400 12px/1.5 var(--f-mono);color:var(--muted);max-height:150px;overflow:auto}
+ol.log li span{color:var(--fg)}
+.note{font-size:12px;color:var(--muted)}
+.note code{font-family:var(--f-mono);font-size:11.5px;color:var(--fg)}
+
+@media (max-width:860px){
+  html,body{height:auto}
+  .app{grid-template-columns:minmax(0,1fr);height:auto;min-height:0}
+  .stage{height:62vh;min-height:340px}
+  .rail{overflow:visible}
+  .hud .cell{font-size:28px}
+  .hint{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="stage">
+    <div id="view" aria-label="3B küp matris görünümü"></div>
+    <div class="hud">
+      <span class="lbl">Hücre (x · y · z)</span>
+      <span class="cell" id="hudCell">3 · 3 · 3</span>
+      <span class="pill ok" id="wakePill">Her zaman aktif</span>
+    </div>
+    <div class="legend">
+      <span><i style="background:var(--ax-x)"></i>X · sağ kenar</span>
+      <span><i style="background:var(--ax-y)"></i>Ekran normali</span>
+      <span><i style="background:var(--ax-z)"></i>Saat 12 yönü</span>
+    </div>
+    <div class="hint">Sürükle: döndür · Tekerlek/çimdik: yakınlaştır · Çift tık: görünümü sıfırla</div>
+  </div>
+
+  <aside class="rail">
+    <header>
+      <h1>Bilek Küpü</h1>
+      <p>Galaxy Watch Ultra'nın yön verisiyle 3B hücre matrisinde gezin. Saat bağlı değilken demo hareketi oynar.</p>
+    </header>
+
+    <section>
+      <h2>Kaynak</h2>
+      <div class="seg" role="group" aria-label="Veri kaynağı">
+        <button type="button" data-src="demo" aria-pressed="true">Demo</button>
+        <button type="button" data-src="manual" aria-pressed="false">Elle</button>
+        <button type="button" data-src="ws" aria-pressed="false">Saat</button>
+        <button type="button" data-src="phone" aria-pressed="false">Telefon</button>
+      </div>
+      <div id="wsGroup" hidden>
+        <div class="row">
+          <input type="text" id="wsUrl" spellcheck="false" aria-label="Relay adresi">
+          <button type="button" class="btn primary" id="wsConnect">Bağlan</button>
+        </div>
+      </div>
+      <div id="manualGroup" hidden>
+        <label class="sl">Yaw <input type="range" id="mYaw" min="-90" max="90" value="0"><output id="oYaw">0°</output></label>
+        <label class="sl">Pitch <input type="range" id="mPitch" min="-90" max="90" value="0"><output id="oPitch">0°</output></label>
+        <label class="sl">Roll <input type="range" id="mRoll" min="-90" max="90" value="0"><output id="oRoll">0°</output></label>
+        <p class="note">Klavye: A/D yaw, W/S pitch, Q/E roll.</p>
+      </div>
+      <p class="status" id="connStatus">Demo hareketi oynuyor.</p>
+    </section>
+
+    <section>
+      <h2>Bilek durumu</h2>
+      <dl>
+        <dt>Ekran</dt><dd id="rScreen">yukarı bakıyor</dd>
+        <dt>Saat 12 yönü</dt><dd id="r12">ileri</dd>
+        <dt class="ax-y">Yaw (dönme)</dt><dd id="rYaw">0.0°</dd>
+        <dt class="ax-x">Pitch (öne/arkaya)</dt><dd id="rPitch">0.0°</dd>
+        <dt class="ax-z">Roll (yana)</dt><dd id="rRoll">0.0°</dd>
+        <dt>Konum</dt><dd id="rPos">0.00, 0.00, 0.00</dd>
+        <dt>Hücre no</dt><dd id="rIdx">63 / 125</dd>
+        <dt>Veri hızı</dt><dd id="rHz">— Hz</dd>
+      </dl>
+    </section>
+
+    <section>
+      <h2>Kontrol</h2>
+      <div class="field"><span>Hareket modu</span>
+        <select id="mode">
+          <option value="point">Yönelme → konum</option>
+          <option value="tilt">Eğerek sür</option>
+        </select>
+      </div>
+      <div class="field"><span>Matris</span>
+        <select id="size">
+          <option value="3">3 × 3 × 3</option>
+          <option value="4">4 × 4 × 4</option>
+          <option value="5" selected>5 × 5 × 5</option>
+          <option value="6">6 × 6 × 6</option>
+          <option value="8">8 × 8 × 8</option>
+        </select>
+      </div>
+      <label class="sl">Açı <input type="range" id="range" min="20" max="90" value="45"><output id="oRange">±45°</output></label>
+      <label class="chk"><input type="checkbox" id="needWake"> Hareket için çift alkışla uyandır</label>
+      <div class="row">
+        <button type="button" class="btn" id="calib">Sıfırla (C)</button>
+        <button type="button" class="btn" id="clap">Çift alkış (Boşluk)</button>
+      </div>
+      <p class="note" id="modeNote">Bileği sağa/sola çevirmek X'i, öne/arkaya eğmek Y'yi, yana yatırmak Z'yi değiştirir.</p>
+    </section>
+
+    <section>
+      <h2>Olaylar</h2>
+      <ol class="log" id="log"></ol>
+    </section>
+
+    <p class="note">Saatle kullanmak için <code>relay.js</code>'i bilgisayarda çalıştır, bu sayfayı onun verdiği adresten aç, saat uygulamasına aynı adresi yaz.</p>
+  </aside>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+const $ = s => document.querySelector(s);
+if (typeof THREE === 'undefined'){
+  document.querySelector('#view').innerHTML = '<p style="padding:60px 20px;text-align:center;color:var(--muted)">3B kütüphane (three.js) yüklenemedi. İnternet bağlantını kontrol edip sayfayı yenile.</p>';
+  return;
+}
+const rad = d => d*Math.PI/180, deg = r => r*180/Math.PI;
+const clamp = (v,a,b) => Math.max(a, Math.min(b, v));
+
+// ---------- Sahne ----------
+const view = $('#view');
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1, 2));
+view.appendChild(renderer.domElement);
+const canvas = renderer.domElement;
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(40, 1, 0.05, 60);
+const ORBIT0 = {theta:0.62, phi:1.08, r:5.6};
+const orbit = {...ORBIT0};
+function placeCam(){
+  const {theta,phi,r} = orbit;
+  camera.position.set(r*Math.sin(phi)*Math.sin(theta), r*Math.cos(phi), r*Math.sin(phi)*Math.cos(theta));
+  camera.lookAt(0,0,0);
+}
+scene.add(new THREE.HemisphereLight(0xffffff, 0x445566, 0.85));
+const sun = new THREE.DirectionalLight(0xffffff, 0.75); sun.position.set(2,4,3); scene.add(sun);
+
+// Matris
+let N = 5, cell = 2/N;
+const gridGroup = new THREE.Group(); scene.add(gridGroup);
+const innerMat = new THREE.LineBasicMaterial({transparent:true, opacity:0.28});
+const outerMat = new THREE.LineBasicMaterial({});
+const dotMat = new THREE.PointsMaterial({size:0.03, transparent:true, opacity:0.6});
+const activeMat = new THREE.MeshBasicMaterial({transparent:true, opacity:0.16, depthWrite:false});
+const activeEdgeMat = new THREE.LineBasicMaterial({});
+const activeBox = new THREE.Mesh(new THREE.BoxGeometry(1,1,1), activeMat);
+const activeEdges = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1,1,1)), activeEdgeMat);
+activeBox.add(activeEdges); scene.add(activeBox);
+
+function buildGrid(){
+  gridGroup.children.forEach(o => o.geometry && o.geometry.dispose());
+  gridGroup.clear();
+  cell = 2/N;
+  const p = [];
+  for (let i=0;i<=N;i++) for (let j=0;j<=N;j++){
+    const a = -1+i*cell, b = -1+j*cell;
+    p.push(-1,a,b, 1,a,b,  a,-1,b, a,1,b,  a,b,-1, a,b,1);
+  }
+  const g = new THREE.BufferGeometry(); g.setAttribute('position', new THREE.Float32BufferAttribute(p,3));
+  gridGroup.add(new THREE.LineSegments(g, innerMat));
+  gridGroup.add(new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(2,2,2)), outerMat));
+  const c = [];
+  for (let i=0;i<N;i++) for (let j=0;j<N;j++) for (let k=0;k<N;k++) c.push(-1+(i+.5)*cell, -1+(j+.5)*cell, -1+(k+.5)*cell);
+  const dg = new THREE.BufferGeometry(); dg.setAttribute('position', new THREE.Float32BufferAttribute(c,3));
+  gridGroup.add(new THREE.Points(dg, dotMat));
+  activeBox.scale.setScalar(cell*0.94);
+  S && (S.cellKey = '');
+}
+
+// Saat modeli: yerel +y = ekran normali, -z = saat 12 yönü, +x = sağ kenar
+const watch = new THREE.Group();
+const caseMat = new THREE.MeshStandardMaterial({color:0xa3acb6, metalness:0.55, roughness:0.38});
+const screenMat = new THREE.MeshStandardMaterial({color:0x0a0e13, roughness:0.15, metalness:0.1});
+const strapMat = new THREE.MeshStandardMaterial({color:0xd2701a, roughness:0.8});
+const markMat = new THREE.MeshBasicMaterial({color:0xffffff});
+const caseMesh = new THREE.Mesh(new THREE.BoxGeometry(0.26,0.07,0.26), caseMat); watch.add(caseMesh);
+const screen = new THREE.Mesh(new THREE.CylinderGeometry(0.105,0.105,0.012,40), screenMat); screen.position.y = 0.041; watch.add(screen);
+const mark = new THREE.Mesh(new THREE.BoxGeometry(0.018,0.006,0.03), markMat); mark.position.set(0,0.05,-0.08); watch.add(mark);
+[-1,1].forEach(s => { const st = new THREE.Mesh(new THREE.BoxGeometry(0.17,0.028,0.3), strapMat); st.position.set(0,-0.004,s*0.28); watch.add(st); });
+const crown = new THREE.Mesh(new THREE.BoxGeometry(0.03,0.03,0.07), caseMat); crown.position.set(0.14,0,0); watch.add(crown);
+const action = new THREE.Mesh(new THREE.BoxGeometry(0.03,0.03,0.06), strapMat); action.position.set(-0.14,0,0); watch.add(action);
+const O = new THREE.Vector3();
+const arX = new THREE.ArrowHelper(new THREE.Vector3(1,0,0), O, 0.42, 0xff0000, 0.08, 0.05);
+const arY = new THREE.ArrowHelper(new THREE.Vector3(0,1,0), O, 0.5, 0x00ff00, 0.08, 0.05);
+const arZ = new THREE.ArrowHelper(new THREE.Vector3(0,0,-1), O, 0.46, 0x0000ff, 0.08, 0.05);
+watch.add(arX, arY, arZ);
+watch.scale.setScalar(1.05);
+scene.add(watch);
+
+// İz, zemin gölgesi ve düşey çizgi
+const TRAIL = 110;
+const trailPos = new Float32Array(TRAIL*3);
+const trailGeo = new THREE.BufferGeometry(); trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos,3));
+const trailMat = new THREE.LineBasicMaterial({transparent:true, opacity:0.55});
+const trail = new THREE.Line(trailGeo, trailMat); trail.frustumCulled = false; scene.add(trail);
+let trailCount = 0;
+const shadowMat = new THREE.MeshBasicMaterial({transparent:true, opacity:0.45, depthWrite:false});
+const shadow = new THREE.Mesh(new THREE.CircleGeometry(0.06,32), shadowMat); shadow.rotation.x = -Math.PI/2; scene.add(shadow);
+const dropGeo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
+const dropMat = new THREE.LineDashedMaterial({dashSize:0.04, gapSize:0.03, transparent:true, opacity:0.7});
+const drop = new THREE.Line(dropGeo, dropMat); scene.add(drop);
+
+// Tema
+function tok(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+function applyTheme(){
+  scene.background = new THREE.Color(tok('--scene'));
+  innerMat.color.set(tok('--grid')); dotMat.color.set(tok('--grid'));
+  outerMat.color.set(tok('--edge'));
+  activeMat.color.set(tok('--accent')); activeEdgeMat.color.set(tok('--accent'));
+  trailMat.color.set(tok('--cursor')); strapMat.color.set(tok('--cursor'));
+  shadowMat.color.set(tok('--cursor')); dropMat.color.set(tok('--cursor'));
+  arX.setColor(new THREE.Color(tok('--ax-x'))); arY.setColor(new THREE.Color(tok('--ax-y'))); arZ.setColor(new THREE.Color(tok('--ax-z')));
+}
+try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme); } catch(e){}
+new MutationObserver(applyTheme).observe(document.documentElement, {attributes:true, attributeFilter:['data-theme']});
+
+// ---------- Durum ----------
+const S = {
+  source:'demo', mode:'point', range:45, needWake:false, awakeUntil:0,
+  pos:new THREE.Vector3(), target:new THREE.Vector3(), cellKey:'',
+  msgTimes:[], raw:new THREE.Quaternion(), ref:new THREE.Quaternion(), yaw0:new THREE.Quaternion(),
+  hasData:false, needCal:false, manual:{yaw:0,pitch:0,roll:0}, active:true
+};
+buildGrid();
+const Yax = new THREE.Vector3(0,1,0);
+// Android / W3C dünya çerçevesi (X doğu, Y kuzey, Z yukarı) → three.js (Y yukarı)
+const qM = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1,0,0), -Math.PI/2);
+const qMi = qM.clone().invert();
+function fromAndroid(w,x,y,z){ return qM.clone().multiply(new THREE.Quaternion(x,y,z,w).normalize()).multiply(qMi); }
+
+function feed(q){
+  S.raw.copy(q); S.hasData = true; S.msgTimes.push(performance.now());
+  if (S.needCal){ S.needCal = false; calibrate(true); }
+}
+function calibrate(silent){
+  S.ref.copy(S.raw);
+  const e = new THREE.Euler().setFromQuaternion(S.raw, 'YXZ');
+  S.yaw0.setFromAxisAngle(Yax, e.y);
+  S.pos.set(0,0,0); trailCount = 0;
+  if (!silent) log('Nötr duruş sıfırlandı');
+}
+function wake(from){
+  S.awakeUntil = performance.now() + 8000;
+  log('Uyandırıldı (' + from + ')');
+}
+
+// ---------- Günlük ----------
+const logEl = $('#log');
+function log(msg){
+  const li = document.createElement('li');
+  const t = new Date();
+  li.innerHTML = t.toLocaleTimeString('tr-TR',{hour12:false}) + ' <span></span>';
+  li.querySelector('span').textContent = msg;
+  logEl.prepend(li);
+  while (logEl.children.length > 30) logEl.lastChild.remove();
+}
+
+// ---------- Kaynaklar ----------
+const conn = $('#connStatus');
+function setConn(cls, text){ conn.className = 'status ' + cls; conn.textContent = text; }
+let ws = null;
+const defaultWs = (location.protocol === 'http:' && location.host) ? 'ws://' + location.host + '/ws' : 'ws://192.168.1.20:8765/ws';
+$('#wsUrl').value = defaultWs;
+
+function setSource(src){
+  S.source = src; S.hasData = false; S.msgTimes = [];
+  S.ref.identity(); S.yaw0.identity(); S.pos.set(0,0,0); trailCount = 0;
+  document.querySelectorAll('.seg button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.src === src)));
+  $('#wsGroup').hidden = src !== 'ws';
+  $('#manualGroup').hidden = src !== 'manual';
+  if (src !== 'ws' && ws){ ws.onclose = null; ws.close(); ws = null; }
+  if (src === 'demo') setConn('', 'Demo hareketi oynuyor.');
+  if (src === 'manual') setConn('', 'Kaydırıcılarla veya klavyeyle bileği döndür.');
+  if (src === 'ws'){ S.raw.identity(); setConn('', 'Relay adresini yazıp Bağlan’a bas.'); }
+  if (src === 'phone'){ S.raw.identity(); startPhone(); }
+  log('Kaynak: ' + ({demo:'Demo',manual:'Elle',ws:'Saat',phone:'Telefon'})[src]);
+}
+document.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => setSource(b.dataset.src)));
+
+function connect(){
+  const url = $('#wsUrl').value.trim();
+  if (ws){ ws.onclose = null; ws.close(); ws = null; }
+  try { ws = new WebSocket(url); }
+  catch(e){ setConn('bad', 'Adres geçersiz. Örnek: ws://192.168.1.20:8765/ws'); return; }
+  setConn('warn', 'Bağlanıyor…');
+  let opened = false;
+  ws.onopen = () => { opened = true; S.needCal = true; setConn('ok', 'Relay’e bağlandı. Saatten veri bekleniyor.'); log('Relay bağlandı'); };
+  ws.onclose = () => {
+    setConn('bad', opened ? 'Bağlantı kapandı. relay.js çalışıyor mu?' :
+      'Bağlanılamadı. relay.js çalışıyor mu, adres doğru mu? Not: claude.ai önizlemesi ağ bağlantısına izin vermez; sayfayı relay.js’in verdiği adresten aç.');
+  };
+  ws.onmessage = ev => {
+    if (S.source !== 'ws') return;
+    let m; try { m = JSON.parse(ev.data); } catch(e){ return; }
+    if (m.t === 'ori' && Array.isArray(m.q) && m.q.length === 4){
+      if (!S.hasData) setConn('ok', 'Saat verisi geliyor.');
+      feed(fromAndroid(+m.q[0], +m.q[1], +m.q[2], +m.q[3]));
+    } else if (m.t === 'wake') wake('saat');
+    else if (m.t === 'calibrate') calibrate();
+    else if (m.t === 'gesture' && typeof m.name === 'string') log('Hareket: ' + m.name.slice(0,40));
+  };
+}
+$('#wsConnect').addEventListener('click', connect);
+$('#wsUrl').addEventListener('keydown', e => { if (e.key === 'Enter') connect(); });
+
+// Telefon: W3C deviceorientation → saatle aynı dünya çerçevesi
+function eulerToQuat(alpha, beta, gamma){
+  const x = rad(beta||0)/2, y = rad(gamma||0)/2, z = rad(alpha||0)/2;
+  const cX=Math.cos(x), cY=Math.cos(y), cZ=Math.cos(z), sX=Math.sin(x), sY=Math.sin(y), sZ=Math.sin(z);
+  return { w:cX*cY*cZ - sX*sY*sZ, x:sX*cY*cZ - cX*sY*sZ, y:cX*sY*cZ + sX*cY*sZ, z:cX*cY*sZ + sX*sY*cZ };
+}
+function onOri(e){
+  if (S.source !== 'phone' || e.alpha == null) return;
+  const q = eulerToQuat(e.alpha, e.beta, e.gamma);
+  if (!S.hasData) setConn('ok', 'Telefon sensörü veri gönderiyor. Telefonu bilek gibi tut.');
+  feed(fromAndroid(q.w, q.x, q.y, q.z));
+}
+let phoneListening = false;
+async function startPhone(){
+  setConn('warn', 'Telefon yön sensörü açılıyor…');
+  try {
+    if (typeof DeviceOrientationEvent === 'undefined') throw new Error('none');
+    if (typeof DeviceOrientationEvent.requestPermission === 'function'){
+      const r = await DeviceOrientationEvent.requestPermission();
+      if (r !== 'granted') throw new Error('denied');
+    }
+    if (!phoneListening){ window.addEventListener('deviceorientation', onOri); phoneListening = true; }
+    S.needCal = true;
+    setTimeout(() => { if (S.source === 'phone' && !S.hasData) setConn('bad', 'Yön sensöründen veri gelmiyor. Sayfayı telefonda HTTPS adresinden aç (claude.ai önizlemesi sensöre izin vermez).'); }, 1500);
+  } catch(e){
+    setConn('bad', 'Bu tarayıcı yön sensörüne izin vermedi.');
+  }
+}
+
+// Elle
+const mIn = {yaw:$('#mYaw'), pitch:$('#mPitch'), roll:$('#mRoll')};
+const mOut = {yaw:$('#oYaw'), pitch:$('#oPitch'), roll:$('#oRoll')};
+function syncManual(){ for (const k in mIn){ S.manual[k] = +mIn[k].value; mOut[k].textContent = mIn[k].value + '°'; } }
+for (const k in mIn) mIn[k].addEventListener('input', syncManual);
+
+// Kontroller
+const modeNotes = {
+  point:'Bileği sağa/sola çevirmek X’i, öne/arkaya eğmek Y’yi, yana yatırmak Z’yi değiştirir.',
+  tilt:'Bilek joystick gibi: yana yatır → X, öne/arkaya eğ → Z, sağa/sola çevir → Y yönünde kayar. Düz tutunca durur.'
+};
+$('#mode').addEventListener('change', e => { S.mode = e.target.value; $('#modeNote').textContent = modeNotes[S.mode]; log('Mod: ' + e.target.selectedOptions[0].textContent); });
+$('#size').addEventListener('change', e => { N = +e.target.value; buildGrid(); log('Matris: ' + N + '×' + N + '×' + N); });
+$('#range').addEventListener('input', e => { S.range = +e.target.value; $('#oRange').textContent = '±' + S.range + '°'; });
+$('#needWake').addEventListener('change', e => { S.needWake = e.target.checked; });
+$('#calib').addEventListener('click', () => calibrate());
+$('#clap').addEventListener('click', () => wake('simülasyon'));
+
+window.addEventListener('keydown', e => {
+  const tag = (e.target && e.target.tagName) || '';
+  if (tag === 'INPUT' && e.target.type === 'text' || tag === 'SELECT') return;
+  const k = e.key.toLowerCase();
+  if (k === ' '){ e.preventDefault(); wake('simülasyon'); return; }
+  if (k === 'c'){ calibrate(); return; }
+  const map = {a:['yaw',4], d:['yaw',-4], w:['pitch',4], s:['pitch',-4], q:['roll',4], e:['roll',-4]};
+  if (map[k]){
+    if (S.source !== 'manual') setSource('manual');
+    const [n, d] = map[k]; mIn[n].value = clamp(+mIn[n].value + d, -90, 90); syncManual();
+  }
+});
+
+// Kamera kontrolü
+const ptrs = new Map(); let pinch0 = 0, r0 = 0;
+const pdist = () => { const [a,b] = [...ptrs.values()]; return Math.hypot(a.x-b.x, a.y-b.y) || 1; };
+canvas.addEventListener('pointerdown', e => {
+  canvas.setPointerCapture(e.pointerId); ptrs.set(e.pointerId, {x:e.clientX, y:e.clientY});
+  if (ptrs.size === 2){ pinch0 = pdist(); r0 = orbit.r; }
+});
+canvas.addEventListener('pointermove', e => {
+  const p = ptrs.get(e.pointerId); if (!p) return;
+  if (ptrs.size === 1){
+    orbit.theta -= (e.clientX - p.x) * 0.008;
+    orbit.phi = clamp(orbit.phi - (e.clientY - p.y) * 0.008, 0.15, Math.PI - 0.15);
+  }
+  p.x = e.clientX; p.y = e.clientY;
+  if (ptrs.size === 2) orbit.r = clamp(r0 * pinch0 / pdist(), 2.8, 11);
+});
+['pointerup','pointercancel'].forEach(t => canvas.addEventListener(t, e => ptrs.delete(e.pointerId)));
+canvas.addEventListener('wheel', e => { e.preventDefault(); orbit.r = clamp(orbit.r * Math.exp(e.deltaY * 0.001), 2.8, 11); }, {passive:false});
+canvas.addEventListener('dblclick', () => Object.assign(orbit, ORBIT0));
+
+function resize(){
+  const w = view.clientWidth, h = view.clientHeight;
+  if (!w || !h) return;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+}
+new ResizeObserver(resize).observe(view);
+
+// ---------- Okumalar ----------
+const el = {cell:$('#hudCell'), pill:$('#wakePill'), scr:$('#rScreen'), t12:$('#r12'), yaw:$('#rYaw'), pitch:$('#rPitch'), roll:$('#rRoll'), pos:$('#rPos'), idx:$('#rIdx'), hz:$('#rHz')};
+function dirName(v){
+  const ax = Math.abs(v.x), ay = Math.abs(v.y), az = Math.abs(v.z);
+  if (ay >= ax && ay >= az) return v.y > 0 ? 'yukarı' : 'aşağı';
+  if (ax >= az) return v.x > 0 ? 'sağa' : 'sola';
+  return v.z < 0 ? 'ileri' : 'geriye (sana)';
+}
+const fmt = a => (a >= 0 ? '+' : '−') + Math.abs(a).toFixed(1) + '°';
+let lastUi = 0;
+function updateUi(now, yaw, pitch, roll, ijk, qShow){
+  if (now - lastUi < 90) return; lastUi = now;
+  el.cell.innerHTML = '<b>' + (ijk[0]+1) + '</b> · <b>' + (ijk[1]+1) + '</b> · <b>' + (ijk[2]+1) + '</b>';
+  el.yaw.textContent = fmt(yaw); el.pitch.textContent = fmt(pitch); el.roll.textContent = fmt(roll);
+  el.pos.textContent = [S.pos.x, S.pos.y, S.pos.z].map(v => (v >= 0 ? ' ' : '−') + Math.abs(v).toFixed(2)).join(',');
+  el.idx.textContent = (ijk[0] + ijk[1]*N + ijk[2]*N*N + 1) + ' / ' + N*N*N;
+  const n = new THREE.Vector3(0,1,0).applyQuaternion(qShow);
+  const f = new THREE.Vector3(0,0,-1).applyQuaternion(qShow);
+  el.scr.textContent = dirName(n) + ' bakıyor';
+  el.t12.textContent = dirName(f);
+  while (S.msgTimes.length && now - S.msgTimes[0] > 1000) S.msgTimes.shift();
+  el.hz.textContent = (S.source === 'ws' || S.source === 'phone') ? S.msgTimes.length + ' Hz' : '— Hz';
+  if (!S.needWake){ el.pill.className = 'pill ok'; el.pill.textContent = 'Her zaman aktif'; }
+  else if (S.active){ el.pill.className = 'pill ok'; el.pill.textContent = 'Uyanık · ' + Math.ceil((S.awakeUntil - now)/1000) + ' sn'; }
+  else { el.pill.className = 'pill warn'; el.pill.textContent = 'Uykuda · çift alkış bekliyor'; }
+}
+
+// ---------- Döngü ----------
+const tmpE = new THREE.Euler();
+let last = performance.now();
+function frame(now){
+  const dt = Math.min(0.05, (now - last) / 1000); last = now;
+  if (S.source === 'demo'){
+    const s = now / 1000;
+    S.raw.setFromEuler(tmpE.set(rad(28*Math.sin(s*0.8+1)), rad(40*Math.sin(s*0.5)), rad(32*Math.sin(s*0.31)), 'YXZ'));
+  } else if (S.source === 'manual'){
+    S.raw.setFromEuler(tmpE.set(rad(S.manual.pitch), rad(S.manual.yaw), rad(S.manual.roll), 'YXZ'));
+  }
+  const qRel = S.raw.clone().multiply(S.ref.clone().invert());
+  const qShow = S.yaw0.clone().invert().multiply(S.raw);
+  tmpE.setFromQuaternion(qRel, 'YXZ');
+  const yaw = deg(tmpE.y), pitch = deg(tmpE.x), roll = deg(tmpE.z);
+
+  S.active = !S.needWake || now < S.awakeUntil;
+  const lim = 0.98, R = S.range;
+  if (S.active){
+    if (S.mode === 'point'){
+      S.target.set(clamp(-yaw/R,-1,1)*lim, clamp(pitch/R,-1,1)*lim, clamp(-roll/R,-1,1)*lim);
+      S.pos.lerp(S.target, 1 - Math.exp(-dt*12));
+    } else {
+      const dz = a => { const m = Math.max(0, Math.abs(a) - 8) / Math.max(1, R - 8); return Math.sign(a) * Math.min(1, m); };
+      const sp = 1.4 * dt;
+      S.pos.x = clamp(S.pos.x - dz(roll)*sp, -lim, lim);
+      S.pos.z = clamp(S.pos.z + dz(pitch)*sp, -lim, lim);
+      S.pos.y = clamp(S.pos.y + dz(yaw)*sp, -lim, lim);
+    }
+  }
+  watch.position.copy(S.pos);
+  watch.quaternion.copy(qShow);
+
+  const ijk = [S.pos.x, S.pos.y, S.pos.z].map(v => clamp(Math.floor((v+1)/cell), 0, N-1));
+  activeBox.position.set(-1+(ijk[0]+.5)*cell, -1+(ijk[1]+.5)*cell, -1+(ijk[2]+.5)*cell);
+  const key = ijk.join(',');
+  if (key !== S.cellKey){
+    if (S.cellKey && S.source !== 'demo') log('Hücre → (' + ijk.map(v => v+1).join(', ') + ')');
+    S.cellKey = key; activeMat.opacity = 0.42;
+  }
+  activeMat.opacity += (0.16 - activeMat.opacity) * Math.min(1, dt*6);
+
+  // iz
+  if (trailCount < TRAIL) trailCount++;
+  trailPos.copyWithin(3, 0, (TRAIL-1)*3);
+  trailPos[0] = S.pos.x; trailPos[1] = S.pos.y; trailPos[2] = S.pos.z;
+  if (trailCount === 1) for (let i=1;i<TRAIL;i++){ trailPos[i*3]=S.pos.x; trailPos[i*3+1]=S.pos.y; trailPos[i*3+2]=S.pos.z; }
+  trailGeo.attributes.position.needsUpdate = true;
+  trailGeo.setDrawRange(0, trailCount);
+
+  shadow.position.set(S.pos.x, -0.995, S.pos.z);
+  const dp = dropGeo.attributes.position;
+  dp.setXYZ(0, S.pos.x, S.pos.y, S.pos.z); dp.setXYZ(1, S.pos.x, -0.995, S.pos.z); dp.needsUpdate = true;
+  drop.computeLineDistances();
+
+  updateUi(now, yaw, pitch, roll, ijk, qShow);
+  placeCam();
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+applyTheme(); resize(); syncManual();
+log('Hazır. Demo hareketi oynuyor.');
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
