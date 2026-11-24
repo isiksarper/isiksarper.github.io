@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "iokart")(type "KiCad")(uri "${KIPRJMOD}/lib/iokart.kicad_sym")(options "")(descr "IO kart ozel semboller"))
+)

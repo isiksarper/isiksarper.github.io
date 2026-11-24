@@ -1,0 +1,120 @@
+(kicad_sch
+  (version 20230121)
+  (generator iokart_gen)
+  (uuid 73c63be2-46cf-51c1-8d18-3a85f463dba6)
+  (paper "A4")
+  (title_block (title "IO Kart - 16 DI / 16 DO / 8 AI / 4 AO - Ethernet") (rev "0.1"))
+  (lib_symbols)
+  (text
+    "IO Kart - 16 DI / 16 DO / 8 AI / 4 AO - Ethernet"
+    (at 25 25 0)
+    (effects (font (size 3 3)) (justify left bottom))
+    (uuid 4f77238f-8eec-54c6-9849-444f708e2b97)
+  )
+  (sheet
+    (at 25 40)
+    (size 70 30)
+    (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0))
+    (uuid 17237392-e042-5a00-a36a-947e8336ef37)
+    (property
+      "Sheetname"
+      "1 - Besleme ve izolasyon"
+      (at 25 39.3 0)
+      (effects (font (size 1.5 1.5)) (justify left bottom))
+    )
+    (property
+      "Sheetfile"
+      "besleme.kicad_sch"
+      (at 25 70.6 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances (project "iokart" (path "/73c63be2-46cf-51c1-8d18-3a85f463dba6" (page "2"))))
+  )
+  (sheet
+    (at 110 40)
+    (size 70 30)
+    (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0))
+    (uuid 48fd41b0-b730-5249-801f-1583b41e3b43)
+    (property
+      "Sheetname"
+      "2 - Islemci ve Ethernet"
+      (at 110 39.3 0)
+      (effects (font (size 1.5 1.5)) (justify left bottom))
+    )
+    (property
+      "Sheetfile"
+      "islemci_ethernet.kicad_sch"
+      (at 110 70.6 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances (project "iokart" (path "/73c63be2-46cf-51c1-8d18-3a85f463dba6" (page "3"))))
+  )
+  (sheet
+    (at 195 40)
+    (size 70 30)
+    (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0))
+    (uuid 5356f559-636d-56d6-9d6c-cada8b727603)
+    (property
+      "Sheetname"
+      "3 - Dijital girisler (16 x 24 V, sinking, IEC 61131-2 Tip 3)"
+      (at 195 39.3 0)
+      (effects (font (size 1.5 1.5)) (justify left bottom))
+    )
+    (property
+      "Sheetfile"
+      "dijital_giris.kicad_sch"
+      (at 195 70.6 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances (project "iokart" (path "/73c63be2-46cf-51c1-8d18-3a85f463dba6" (page "4"))))
+  )
+  (sheet
+    (at 25 85)
+    (size 70 30)
+    (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0))
+    (uuid c16ec09a-5f91-5454-9a80-39b168b4820b)
+    (property
+      "Sheetname"
+      "4 - Dijital cikislar (16 x 24 V high-side) - SURUCU ENTEGRESI EKSIK"
+      (at 25 84.3 0)
+      (effects (font (size 1.5 1.5)) (justify left bottom))
+    )
+    (property
+      "Sheetfile"
+      "dijital_cikis.kicad_sch"
+      (at 25 115.6 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances (project "iokart" (path "/73c63be2-46cf-51c1-8d18-3a85f463dba6" (page "5"))))
+  )
+  (sheet
+    (at 110 85)
+    (size 70 30)
+    (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0))
+    (uuid c94c2423-725c-56e4-b2de-7c8bed919c2a)
+    (property
+      "Sheetname"
+      "5 - Analog girisler (8) ve cikislar (4)"
+      (at 110 84.3 0)
+      (effects (font (size 1.5 1.5)) (justify left bottom))
+    )
+    (property
+      "Sheetfile"
+      "analog.kicad_sch"
+      (at 110 115.6 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances (project "iokart" (path "/73c63be2-46cf-51c1-8d18-3a85f463dba6" (page "6"))))
+  )
+  (sheet_instances (path "/" (page "1")))
+)
